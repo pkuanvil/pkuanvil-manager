@@ -185,11 +185,40 @@ const pkuanvil_set_default_b2keyid = async (param) => {
 	return data;
 };
 
+/**
+ * @param {Object} param
+ * @param {Number | string} param.uid
+ * @param {string} param.token
+ * @param {string} param.prefix
+ */
+
+const pkuanvil_register_prefix = async (param) => {
+	const { uid, prefix, token } = param;
+	const result = await fetch(`${pkuanvil_host}/api/v3/plugins/pr_B2Token`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			uid: uidInt(uid),
+			token,
+			action: 'registerprefix',
+			prefix,
+		}),
+	});
+	const data = await result.json();
+	if (!result.ok) {
+		return { success: false, code: result.status, message: data.status.message };
+	}
+	return { ...data, success: true };
+};
+
 export {
 	pkuanvil_get_b2keys,
 	pkuanvil_get_b2keys_client,
 	pkuanvil_append_b2keys,
 	pkuanvil_remove_b2keys,
 	pkuanvil_set_default_b2keyid,
+	pkuanvil_register_prefix,
 	pkuanvil_host,
 }
