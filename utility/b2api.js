@@ -134,9 +134,11 @@ async function b2_delete_key(param) {
 /**
  * @param {B2Conf} conf
  * @param {B2Auth} auth
+ * @param {String} prefix
+ * @param {String} startFileName
  */
 
-async function b2_list_file_names(conf, auth, prefix) {
+async function b2_list_file_names(conf, auth, prefix, startFileName) {
 	const res = await fetch(`${auth.apiUrl}/b2api/v2/b2_list_file_names`, {
 		method: 'POST',
 		headers: {
@@ -147,6 +149,7 @@ async function b2_list_file_names(conf, auth, prefix) {
 			delimiter: '/',
 			prefix: prefix || conf.namePrefix,
 			maxFileCount: 1000,
+			startFileName: startFileName,
 		}),
 	});
 	const data = await res.json();

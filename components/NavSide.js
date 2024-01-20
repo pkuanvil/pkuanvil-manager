@@ -1,14 +1,16 @@
+import Link from "next/link"
+
 function Link1({ currentPath, path, description }) {
   if (currentPath === path) {
     return (
       <li className="mb-2">
-        <a href={path} className="text-sky-600">{description}</a>
+        <Link href={path} className="text-sky-600">{description}</Link>
       </li>
     )
   } else {
     return (
       <li className="mb-2">
-        <a href={path} className="text-slate-700 hover:text-sky-500">{description}</a>
+        <Link href={path} className="text-slate-700 hover:text-sky-500">{description}</Link>
       </li>
     )
   }

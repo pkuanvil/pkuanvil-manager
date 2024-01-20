@@ -1,4 +1,5 @@
 import FileMark from "@/utility/client/FileMark";
+import Link from "next/link";
 
 function DeleteItem({ href, mark, displayName, handleOnClick }) {
 	let htmlClass = "";
@@ -18,7 +19,7 @@ function DeleteItem({ href, mark, displayName, handleOnClick }) {
 
 function StaticItem({ href, displayName }) {
 	return (
-		<a href={href}>{displayName}</a>
+		<Link href={href}>{displayName}</Link>
 	)
 }
 
@@ -88,7 +89,7 @@ export default function FilesList({ files, prefixFull, authToken, downloadPrefix
 		}
 	})
 	return (
-		<div className="py-2">
+		<div className="max-h-screen overflow-scroll">
 			<table className="table-auto">
 				<thead>
 					<tr>

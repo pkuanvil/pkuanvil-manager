@@ -9,7 +9,7 @@ export default function KeySetDefault({ keyID }) {
 	const [result, setResult] = useState(null);
 	const [error, setError] = useState(null);
 
-	const doDelete = async event => {
+	const doActivate = async event => {
 		setLoading(true);
 		setResult(null);
 		setError(null);
@@ -30,7 +30,7 @@ export default function KeySetDefault({ keyID }) {
 		<div>
 			<button
 				className="px-2 py-1 rounded border hover:bg-amber-50 hover:text-red-600"
-				onClick={doDelete}
+				onClick={doActivate}
 			>
 				Activate this key
 			</button>

@@ -1,14 +1,14 @@
 "use client";
 
-import FilesNavBar from "../FilesNavBar";
+import { FilesNavBar, FilesNextAndPrev } from "../FilesNavBar";
 import FilesList from "../FilesList";
 import { InputFiles, InputDirectory, FilesUploadStatus } from "../FilesUpload";
 import FileDelete from "../FileDelete";
 import { useState } from "react";
-import { api_helper_delete_prefix } from "@/utility/client/API";
 import { DeleteFilesByNames } from "@/utility/client/Delete";
 import DummyCatchError from "@/utility/client/DummyCatchError";
 import FileMark from "@/utility/client/FileMark";
+import Link from "next/link";
 
 function PathSegments({ prefixFull }) {
 	// TODO: Assert prefix must be full
@@ -22,7 +22,7 @@ function PathSegments({ prefixFull }) {
 		const seg = segs[i];
 		path += `/${seg}`;
 		anchors.push(
-			<a key={2 * i} href={path}>{seg}</a>
+			<Link key={2 * i} href={path}>{seg}</Link>
 		)
 		anchors.push(
 			<span key={2 * i + 1}> / </span>
@@ -43,18 +43,20 @@ function getDeleteFileNamesAndIndex(files, markedItems) {
 	return { fileNames, indexes };
 }
 
-function Files({ initFiles, prefixFull, authToken, downloadPrefix }) {
+function Files({ initFiles, prefixFull, nextFileName, authToken, downloadPrefix }) {
 	const [uploadStatus, setUploadStatus] = useState(new Map());
 	const [viewId, setViewId] = useState(0);
 	const [markedItems, setMarkedItems] = useState(new Array(initFiles.length).fill(FileMark.NORMAL));
 	const [deleting, setDeleting] = useState(false);
 	const [errors, setErrors] = useState([]);
-	// TODO
-	global.api_helper_delete_prefix = api_helper_delete_prefix;
+	let showNextPrev = false;
 	let showInputFiles = false;
 	let showInputDir = false;
 	let showUploadStatus = false;
 	let allowDelete = false;
+	if (viewId === 0) {
+		showNextPrev = true;
+	}
 	if (viewId === 1) {
 		showInputFiles = true;
 		showUploadStatus = true;
@@ -93,15 +95,20 @@ function Files({ initFiles, prefixFull, authToken, downloadPrefix }) {
 			<FilesNavBar viewId={viewId} handleClick={setViewId} />
 			<InputFiles show={showInputFiles} errorCallback={showErrors} setUploadStatus={setUploadStatus} />
 			<InputDirectory show={showInputDir} errorCallback={showErrors} setUploadStatus={setUploadStatus} />
-			<div className="overflow-scroll max-h-48">
-				{
-					errors.map((error, index) => {
-						return (
-							<p key={index} className="text-red-600">{error.toString()}</p>
-						)
-					})
-				}
-			</div>
+			{
+				errors.length ? (
+				<div className="overflow-scroll max-h-48">
+					{
+						errors.map((error, index) => {
+							return (
+								<p key={index} className="text-red-600">{error.toString()}</p>
+							)
+						})
+					}
+				</div>
+				) : null
+			}
+			{ showNextPrev ? <FilesNextAndPrev nextFileName={nextFileName} /> : null }
 			<FilesUploadStatus show={showUploadStatus} status={uploadStatus} />
 			<FileDelete show={allowDelete} deleting={deleting} doDelete={doDelete} />
 			<FilesList
