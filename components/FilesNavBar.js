@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 function Items({ viewId, id, isLast, description, handleClick }) {
-  let wrapperClass = "mr-1 float-left";
+  let wrapperClass = "mr-1 inline-block";
   let textClass = "px-2 py-1 rounded border";
   if (isLast) {
     wrapperClass = "";
@@ -10,9 +10,9 @@ function Items({ viewId, id, isLast, description, handleClick }) {
     textClass += " border-black";
   }
   return (
-    <div className={wrapperClass} key={id}>
+    <span className={wrapperClass} key={id}>
       <button id={id} className={textClass} onClick={() => handleClick && handleClick(id)}>{description}</button>
-    </div>
+    </span>
   )
 }
 
