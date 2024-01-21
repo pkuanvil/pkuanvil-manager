@@ -1,0 +1,7 @@
+main.route-index h2 {
+	font-weight: bold;
+}
+
+main.route-index p {
+	margin-bottom: 1.5rem;
+}
