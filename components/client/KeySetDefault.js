@@ -1,7 +1,7 @@
 "use client";
 
 import { readCookiesAsJson } from "@/utility/client/misc";
-import { pkuanvil_set_default_b2keyid } from "@/utility/pkuanvilapi";
+import { pkuanvil_set_default_b2keyid_client } from "@/utility/pkuanvilapi";
 import { useState } from "react";
 
 export default function KeySetDefault({ keyID }) {

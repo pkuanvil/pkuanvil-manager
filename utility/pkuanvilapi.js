@@ -5,11 +5,15 @@ import { APIThrowError } from './misc';
 
 /** @type {string} */
 let pkuanvil_host;
+/** @type {string} */
+let pkuanvil_host_client;
 if (process.env.PKUANVIL_HOST) {
 	pkuanvil_host = process.env.PKUANVIL_HOST;
 } else if (process.env.NODE_ENV === 'production') {
-	pkuanvil_host = 'https://www.pkuanvil.com';
+	pkuanvil_host_client = 'https://www.pkuanvil.com';
+	pkuanvil_host = 'http://127.0.0.1:4567';
 } else if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' ) {
+	pkuanvil_host_client = 'http://127.0.0.1:4567';
 	pkuanvil_host = 'http://127.0.0.1:4567';
 }
 
@@ -76,7 +80,7 @@ const pkuanvil_get_b2keys = async (param) => {
 const pkuanvil_get_b2keys_client = async (param) => {
 	const { useCredentials, uid, token } = param;
 	AssertClient();
-	const result = await fetch(`${pkuanvil_host}/api/v3/plugins/pr_B2Token`, {
+	const result = await fetch(`${pkuanvil_host_client}/api/v3/plugins/pr_B2Token`, {
 		method: 'POST',
 		mode: 'cors',
 		credentials: useCredentials ? 'include': 'omit',
@@ -189,6 +193,34 @@ const pkuanvil_set_default_b2keyid = async (param) => {
  * @param {Object} param
  * @param {Number | string} param.uid
  * @param {string} param.token
+ * @param {string} param.keyID
+ */
+
+const pkuanvil_set_default_b2keyid_client = async (param) => {
+	const { uid, token, keyID } = param;
+	const result = await fetch(`${pkuanvil_host_client}/api/v3/plugins/pr_B2Token`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			uid: uidInt(uid),
+			token,
+			action: 'setdefaultb2keyid',
+			keyID,
+		}),
+	});
+	const data = await result.json();
+	if (!result.ok) {
+		APIThrowError('pkuanvil_set_default_b2keyid', data);
+	}
+	return data;
+};
+
+/**
+ * @param {Object} param
+ * @param {Number | string} param.uid
+ * @param {string} param.token
  * @param {string} param.prefix
  */
 
@@ -219,6 +251,8 @@ export {
 	pkuanvil_append_b2keys,
 	pkuanvil_remove_b2keys,
 	pkuanvil_set_default_b2keyid,
+	pkuanvil_set_default_b2keyid_client,
 	pkuanvil_register_prefix,
 	pkuanvil_host,
+	pkuanvil_host_client,
 }

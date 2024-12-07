@@ -1,6 +1,6 @@
 import NavSide from '@/components/NavSide';
 import Header from '@/components/Header';
-import { pkuanvil_host } from '@/utility/pkuanvilapi';
+import { pkuanvil_host, pkuanvil_host_client } from '@/utility/pkuanvilapi';
 import { helper_pkuanvil_userinfo } from '@/utility/helper_token_auth';
 import { cookies } from 'next/headers';
 import "./page.css";
@@ -10,7 +10,7 @@ function Greeting({ userInfo }) {
   if (!userInfo || !userInfo.success) {
     return (
       <p>
-        You are not logged in. Login at <a href={pkuanvil_host}>{pkuanvil_host}</a> first, then refresh the page.
+        You are not logged in. Login at <a href={pkuanvil_host_client}>{pkuanvil_host_client}</a> first, then refresh the page.
       </p>
     )
   }
